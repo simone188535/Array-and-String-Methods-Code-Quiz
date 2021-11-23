@@ -21,3 +21,10 @@ function countdown() {
   }
   timeRemainingEl.textContent = remainingTime;
 }
+
+const quizData = [
+  { question: "", anwser: "", options: [] },
+  { question: "", anwser: "", options: [] },
+  { question: "", anwser: "", options: [] },
+  { question: "", anwser: "", options: [] },
+];
