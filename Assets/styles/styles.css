@@ -45,7 +45,7 @@ main.main-content .article-overview {
     margin: 0 3rem 2rem;
 }
 
-main.main-content .start-button {
+main.main-content #start-button {
     width: 100px;
     margin: 0 auto;
     border: 0;
