@@ -1,5 +1,7 @@
 const timeRemainingEl = document.querySelector('#time-remaining');
 const startButtonEl = document.querySelector('.start-button');
+const questionEl = document.querySelector('.question');
+const questionChoiceList = document.querySelector('.question-choices-list');
 let remainingTime = 10;
 
 // could use ternary here if startButtonEl is presetn in page
