@@ -16,6 +16,10 @@ html, body {
     height: 100%;
 }
 
+a {
+    text-decoration: none;
+}
+
 header .header-nav {
     display: flex;
     justify-content: space-between;
@@ -23,7 +27,6 @@ header .header-nav {
 }
 
 header .header-nav a {
-  text-decoration: none;
   color: var(--primary-purple);
 }
 
@@ -45,7 +48,7 @@ main.main-content .article-overview {
     margin: 0 3rem 2rem;
 }
 
-main.main-content #start-button {
+main.main-content button, main.main-content button a {
     width: 100px;
     margin: 0 auto;
     border: 0;
