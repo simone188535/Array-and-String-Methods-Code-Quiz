@@ -1,19 +1,23 @@
-const timeRemainingEl = document.querySelector('#time-remaining');
-const startButtonEl = document.querySelector('.start-button');
-const questionEl = document.querySelector('.question');
-const questionChoiceList = document.querySelector('.question-choices-list');
-let remainingTime = 10;
+const timeRemainingEl = document.querySelector("#time-remaining");
+const startButtonEl = document.querySelector(".start-button");
+const questionEl = document.querySelector(".question");
+const questionChoiceList = document.querySelector(".question-choices-list");
+let remainingTime = 100;
 
-// could use ternary here if startButtonEl is presetn in page
-timeRemainingEl.textContent = remainingTime;
-let timer = setInterval(countdown, 1000);
+// Timer logic
+let timer = null;
+
+if (timeRemainingEl) {
+  timeRemainingEl.textContent = remainingTime;
+  timer = setInterval(countdown, 1000);
+}
 
 function countdown() {
-    remainingTime--;
+  remainingTime--;
 
-    if (remainingTime === 0) {
-       //  exit quiz 
-       clearTimeout(timer); 
-    }
-    timeRemainingEl.textContent = remainingTime;
+  if (remainingTime === 0) {
+    //  exit quiz
+    clearTimeout(timer);
+  }
+  timeRemainingEl.textContent = remainingTime;
 }
