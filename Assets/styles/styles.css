@@ -1,0 +1,56 @@
+:root {
+    --primary-purple: mediumpurple;
+    --dark-purple: darkorchid;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+header .header-nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 45px;
+}
+
+header .header-nav a {
+  text-decoration: none;
+  color: var(--primary-purple);
+}
+
+header .header-nav a:hover {
+    text-decoration: underline;
+    color: var(--dark-purple);
+  }
+
+main.main-content {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+
+}
+
+main.main-content .article-overview {
+    text-align: center;
+    margin: 0 3rem 2rem;
+}
+
+main.main-content .start-button {
+    width: 100px;
+    margin: 0 auto;
+    border: 0;
+    background: var(--primary-purple);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
