@@ -8,7 +8,7 @@ function countdown() {
     remainingTime--;
   
     if (remainingTime === 0) {
-      //  exit quiz
+      //  exit quiz go back to home page
       clearTimeout(timer);
     }
     timeRemainingEl.textContent = remainingTime;
@@ -70,4 +70,13 @@ if (questionEl && anwserChoiceList) {
     displayQuestionAndAnwserChoices();
 }
 
-anwserChoiceList.add
+function anwserChoiceValidation(event) {
+// this is a great place to do event delegation
+
+// set time out and show correct anwser
+
+// increment questionIndex
+
+// call displayQuestionAndAnwserChoices
+}
+anwserChoiceList.addEventListener("click", anwserChoiceValidation);

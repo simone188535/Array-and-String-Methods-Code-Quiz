@@ -76,3 +76,7 @@ main.main-content .question-choices .anwser-choices-list li {
     margin: 10px 0;
     border-radius: 5px;
 }
+
+main.main-content .question-choices .anwser-choices-list li:hover {
+    background: var(--dark-purple);
+}
