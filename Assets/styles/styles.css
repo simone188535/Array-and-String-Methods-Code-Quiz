@@ -80,3 +80,7 @@ main.main-content .question-choices .anwser-choices-list li {
 main.main-content .question-choices .anwser-choices-list li:hover {
     background: var(--dark-purple);
 }
+
+.anwser-results {
+    display: none;
+}
