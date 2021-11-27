@@ -5,9 +5,11 @@ const anwserChoiceList = document.querySelector(".anwser-choices-list");
 const anwserResultsEl = document.querySelector(".anwser-results");
 const resultStatusEl = document.querySelector(".correct-incorrect");
 const nextQuestionTimerEl = document.querySelector(".next-question-timer");
-let remainingTimeToSolveQuiz = 100;
-let remainingTimeToShowIfAnwserIsCorrect = 5;
+const userInitials = document.querySelector("#user-initials");
+let remainingTimeToSolveQuiz = 75;
+let remainingTimeToShowIfAnwserIsCorrect = 3;
 let questionIndex = 0;
+let userScore = 0;
 
 // function quizCountDown(remainingTime, elementToDisplayTime) {
 
@@ -32,15 +34,21 @@ let questionIndex = 0;
 function quizCountDown(elementToDisplayTime) {
   remainingTimeToSolveQuiz--;
 
-  if (remainingTimeToSolveQuiz === 0) {
+  if (remainingTimeToSolveQuiz <= 0) {
+    // reset time to zero
+    remainingTimeToSolveQuiz = 0;
+    // reset user score
+    userScore = 0;
     //  exit quiz go back to home page
+    window.location.href = "../../index.html";
+    // clear timer
     clearTimeout(quizTimer);
   }
   elementToDisplayTime.textContent = remainingTimeToSolveQuiz;
 }
 
 // Timer logic
-let quizTimer = null;
+let quizTimer;
 
 if (timeRemainingEl) {
   timeRemainingEl.textContent = remainingTimeToSolveQuiz;
@@ -97,61 +105,65 @@ if (questionEl && anwserChoiceList) {
 
 function anwserChoiceValidation(event) {
   // this is a great place to do event delegation
-  let isAnwserCorrect = null;
+  let isAnwserCorrect;
   let target = event.target; // where was the click?
-  let timerInProgress = false;
+  // MOVE THIS TO GLOBALS SCOPPPPPEE
+  // let timerInProgress = false;
 
   if (target.matches("li")) {
-    isAnwserCorrect =
-      (target.getAttribute("data-index") === quizData[questionIndex].anwser) ? 'Correct' : 'Incorrect';
-      // display results
-      resultStatusEl.textContent = isAnwserCorrect;
-      anwserResultsEl.style.display = "block";
-  }
-
-  // set time out and show correct anwser
-  function showAnswerCountDown() {
-    timerInProgress = true;
-    remainingTimeToShowIfAnwserIsCorrect--;
-
-    // when time is up
-    if (remainingTimeToShowIfAnwserIsCorrect === 0) {
-      // remove timer
-      clearTimeout(nextQuestionTimer);
-
-      // reset timer 
-      remainingTimeToShowIfAnwserIsCorrect = 5;
-
-      // if there are still questions left unanwsered
-      if (questionIndex !== quizData.length - 1) {
-        // increment questionIndex
-        questionIndex++;
-
-        // remove all current anwser choices
-        anwserChoiceList.innerHTML = '';
-        
-        // call displayQuestionAndAnwserChoices
-        displayQuestionAndAnwserChoices();
-      }
-
-      // hide anwser results
-      anwserResultsEl.style.display = "none";
-      timerInProgress = false;
-
-      //  add local storage
+    if (
+      Number(target.getAttribute("data-index")) ===
+      quizData[questionIndex].anwser
+    ) {
+      isAnwserCorrect = "Correct";
+      userScore += 20;
+    } else {
+      isAnwserCorrect = "Incorrect";
+      // subtract time
+      remainingTimeToSolveQuiz -= 15;
     }
 
-    // update nextQuestionTimerEl timer
-    nextQuestionTimerEl.textContent = remainingTimeToShowIfAnwserIsCorrect;
+    // if there are still questions left unanwsered
+    if (questionIndex !== quizData.length - 1) {
+      // increment questionIndex
+      questionIndex++;
+
+      // remove all current anwser choices
+      anwserChoiceList.innerHTML = "";
+
+      // call displayQuestionAndAnwserChoices
+      displayQuestionAndAnwserChoices();
+    } else {
+      // go to user initial page
+      window.location.href = "../html/quiz-complete.html";
+
+      // set local storage and user initials
+    }
+
+    // display previous results
+    resultStatusEl.textContent = isAnwserCorrect;
+    anwserResultsEl.style.display = "block";
+
+    function hidePrevResultsCountDown() {
+      remainingTimeToShowIfAnwserIsCorrect--;
+
+      if (remainingTimeToShowIfAnwserIsCorrect === 0) {
+        // hide previous results
+        anwserResultsEl.style.display = "none";
+
+        // remove timer
+        clearTimeout(hidePrevResults);
+
+        // reset timer
+        remainingTimeToShowIfAnwserIsCorrect = 5;
+      }
+    }
+    // hide prev results after a couple of seconds
+    let hidePrevResults = setInterval(hidePrevResultsCountDown, 1000);
   }
-    // update nextQuestionTimerEl time
-    nextQuestionTimerEl.textContent = remainingTimeToShowIfAnwserIsCorrect;
-    
-    let nextQuestionTimer = setInterval(
-      showAnswerCountDown,
-      1000,
-      anwserResultsEl
-    );
 
 }
-anwserChoiceList.addEventListener("click", anwserChoiceValidation);
+
+if (anwserChoiceList) {
+  anwserChoiceList.addEventListener("click", anwserChoiceValidation);
+}
