@@ -5,11 +5,14 @@ const anwserChoiceList = document.querySelector(".anwser-choices-list");
 const anwserResultsEl = document.querySelector(".anwser-results");
 const resultStatusEl = document.querySelector(".correct-incorrect");
 const nextQuestionTimerEl = document.querySelector(".next-question-timer");
-const userInitials = document.querySelector("#user-initials");
+const userInitialsEl = document.querySelector("#user-initials");
+const userInitialsSubmitBtn = document.querySelector("#user-initials-submit");
+const clearHighscoreEl = document.querySelector('#clear-highscore');
 let remainingTimeToSolveQuiz = 75;
 let remainingTimeToShowIfAnwserIsCorrect = 3;
 let questionIndex = 0;
 let userScore = 0;
+let quizScoreLocalStorage = localStorage.getItem('js-quiz-highscore') || [];
 
 // function quizCountDown(remainingTime, elementToDisplayTime) {
 
@@ -136,8 +139,6 @@ function anwserChoiceValidation(event) {
     } else {
       // go to user initial page
       window.location.href = "../html/quiz-complete.html";
-
-      // set local storage and user initials
     }
 
     // display previous results
@@ -166,4 +167,24 @@ function anwserChoiceValidation(event) {
 
 if (anwserChoiceList) {
   anwserChoiceList.addEventListener("click", anwserChoiceValidation);
+}
+
+function obtainUsersInitials(event) {
+  event.preventDefault();
+
+  console.log(quizScoreLocalStorage);
+  // set local storage and user initials
+  const userInitials = userInitialsEl.value.trim();
+  // quizScoreLocalStorage = quizScoreLocalStorage.push({[userInitials]: userScore});
+  
+  // localStorage.setItem('js-quiz-highscore', JSON.stringify(quizScoreLocalStorage));
+
+  // go to user initial page
+  // window.location.href = "../html/highscore.html";
+
+  //SORT data
+}
+
+if (userInitialsSubmitBtn) {
+  userInitialsSubmitBtn.addEventListener("click", obtainUsersInitials);
 }
