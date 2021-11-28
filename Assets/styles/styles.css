@@ -50,7 +50,6 @@ main.main-content .overview {
 }
 
 main.main-content button, main.main-content button a, main.main-content #user-initials-submit {
-    width: 100px;
     margin: 0 auto;
     border: 0;
     background: var(--primary-purple);
@@ -81,12 +80,26 @@ main.main-content .question-choices .anwser-choices-list li:hover {
     background: var(--dark-purple);
 }
 
-.anwser-results {
-    display: none;
-}
-
 main.main-content .initials {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+main.main-content .highscore-section, main.main-content .highscore-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+main.main-content .highscore-section #highscore-section-list {
+    list-style-position: inside;
+}
+
+main.main-content .highscore-buttons button {
+    margin: 10px;
+    justify-content: center;
+}
+
+.anwser-results {
+    display: none;
 }

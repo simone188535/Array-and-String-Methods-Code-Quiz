@@ -8,11 +8,13 @@ const nextQuestionTimerEl = document.querySelector(".next-question-timer");
 const userInitialsEl = document.querySelector("#user-initials");
 const userInitialsSubmitBtn = document.querySelector("#user-initials-submit");
 const clearHighscoreEl = document.querySelector('#clear-highscore');
+const highscoreListEl = document.querySelector('#highscore-section-list');
 let remainingTimeToSolveQuiz = 75;
 let remainingTimeToShowIfAnwserIsCorrect = 3;
 let questionIndex = 0;
 let userScore = 0;
-let quizScoreLocalStorage = localStorage.getItem('js-quiz-highscore') || [];
+let quizScoreLocalStorage = JSON.parse(localStorage.getItem('js-quiz-highscores')) || [];
+// let currentUserQuizScoreLocalStorage = JSON.parse(localStorage.getItem('js-quiz-highscores-user')) || '';
 
 // function quizCountDown(remainingTime, elementToDisplayTime) {
 
@@ -165,26 +167,45 @@ function anwserChoiceValidation(event) {
 
 }
 
-if (anwserChoiceList) {
-  anwserChoiceList.addEventListener("click", anwserChoiceValidation);
+function displayHighscore() {
+  
+    // SORT data
+    const sortedHighscore = quizScoreLocalStorage.sort((firstItem, secondItem) => firstItem.score + secondItem.score);
+
+    // console.log('sortedHighscore ', sortedHighscore);
+    for(const userScores of sortedHighscore) {
+      const ListItem = document.createElement("LI");
+
+      ListItem.textContent = `${userScores.player} - ${userScores.score}`;
+      highscoreListEl.appendChild(ListItem);
+    }
 }
 
 function obtainUsersInitials(event) {
   event.preventDefault();
 
-  console.log(quizScoreLocalStorage);
   // set local storage and user initials
   const userInitials = userInitialsEl.value.trim();
-  // quizScoreLocalStorage = quizScoreLocalStorage.push({[userInitials]: userScore});
+  quizScoreLocalStorage.push({
+    player: userInitials,
+    score: userScore
+  });
   
-  // localStorage.setItem('js-quiz-highscore', JSON.stringify(quizScoreLocalStorage));
+  localStorage.setItem('js-quiz-highscores', JSON.stringify(quizScoreLocalStorage));
 
   // go to user initial page
-  // window.location.href = "../html/highscore.html";
+  window.location.href = "../html/highscore.html";
+}
 
-  //SORT data
+if (anwserChoiceList) {
+  anwserChoiceList.addEventListener("click", anwserChoiceValidation);
 }
 
 if (userInitialsSubmitBtn) {
+  // console.log('userScore', userScore);
   userInitialsSubmitBtn.addEventListener("click", obtainUsersInitials);
+}
+
+if (highscoreListEl) {
+  displayHighscore();
 }
