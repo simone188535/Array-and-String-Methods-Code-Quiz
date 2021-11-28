@@ -1,3 +1,6 @@
+const timeRemainingContainerEl = document.querySelector(
+  "#time-remaining-container"
+);
 const timeRemainingEl = document.querySelector("#time-remaining");
 const startButtonEl = document.querySelector(".start-button");
 const questionEl = document.querySelector(".question");
@@ -5,36 +8,16 @@ const anwserChoiceList = document.querySelector(".anwser-choices-list");
 const anwserResultsEl = document.querySelector(".anwser-results");
 const resultStatusEl = document.querySelector(".correct-incorrect");
 const nextQuestionTimerEl = document.querySelector(".next-question-timer");
-const userInitialsEl = document.querySelector("#user-initials");
-const userInitialsSubmitBtn = document.querySelector("#user-initials-submit");
-const clearHighscoreEl = document.querySelector('#clear-highscore');
-const highscoreListEl = document.querySelector('#highscore-section-list');
+const clearHighscoreEl = document.querySelector("#clear-highscore");
+const highscoreListEl = document.querySelector("#highscore-section-list");
+const overviewEl = document.querySelector(".overview");
+const subContent = document.querySelector(".sub-content");
 let remainingTimeToSolveQuiz = 75;
 let remainingTimeToShowIfAnwserIsCorrect = 3;
 let questionIndex = 0;
 let userScore = 0;
-let quizScoreLocalStorage = JSON.parse(localStorage.getItem('js-quiz-highscores')) || [];
-// let currentUserQuizScoreLocalStorage = JSON.parse(localStorage.getItem('js-quiz-highscores-user')) || '';
-
-// function quizCountDown(remainingTime, elementToDisplayTime) {
-
-//   remainingTime--;
-//   console.log(remainingTime);
-
-//   if (remainingTime === 0) {
-//     //  exit quiz go back to home page
-//     clearTimeout(timer);
-//   }
-//   elementToDisplayTime.textContent = remainingTime;
-// }
-
-// // Timer logic
-// let quizTimer = null;
-
-// if (timeRemainingEl) {
-//   timeRemainingEl.textContent = remainingTimeToSolveQuiz;
-//   quizTimer = setInterval(quizCountDown, 1000, remainingTimeToShowIfAnwserIsCorrect, timeRemainingEl);
-// }
+let quizScoreLocalStorage =
+  JSON.parse(localStorage.getItem("js-quiz-highscores")) || [];
 
 function quizCountDown(elementToDisplayTime) {
   remainingTimeToSolveQuiz--;
@@ -112,18 +95,16 @@ function anwserChoiceValidation(event) {
   // this is a great place to do event delegation
   let isAnwserCorrect;
   let target = event.target; // where was the click?
-  // MOVE THIS TO GLOBALS SCOPPPPPEE
-  // let timerInProgress = false;
 
   if (target.matches("li")) {
     if (
       Number(target.getAttribute("data-index")) ===
       quizData[questionIndex].anwser
     ) {
-      isAnwserCorrect = "Correct";
+      isAnwserCorrect = "correct";
       userScore += 20;
     } else {
-      isAnwserCorrect = "Incorrect";
+      isAnwserCorrect = "incorrect";
       // subtract time
       remainingTimeToSolveQuiz -= 15;
     }
@@ -139,8 +120,19 @@ function anwserChoiceValidation(event) {
       // call displayQuestionAndAnwserChoices
       displayQuestionAndAnwserChoices();
     } else {
-      // go to user initial page
-      window.location.href = "../html/quiz-complete.html";
+      timeRemainingContainerEl.innerHTML = "";
+      overviewEl.innerHTML = " <strong> Please add your initials </strong>";
+      subContent.innerHTML = `<article class="initials">
+        <input type="text" id="user-initials" name="user-initials" /><br /><br />
+        <input id="user-initials-submit" type="submit" value="Submit" />
+      </article>`;
+
+      const userInitialsSubmitBtn = document.querySelector(
+        "#user-initials-submit"
+      );
+
+      userInitialsSubmitBtn.addEventListener("click", obtainUsersInitials);
+
     }
 
     // display previous results
@@ -164,34 +156,37 @@ function anwserChoiceValidation(event) {
     // hide prev results after a couple of seconds
     let hidePrevResults = setInterval(hidePrevResultsCountDown, 1000);
   }
-
 }
 
 function displayHighscore() {
-  
-    // SORT data
-    const sortedHighscore = quizScoreLocalStorage.sort((firstItem, secondItem) => firstItem.score + secondItem.score);
+  // Sort data by score in desc order
+  const sortedHighscore = quizScoreLocalStorage.sort(
+    (firstItem, secondItem) => secondItem.score - firstItem.score 
+  );
 
-    // console.log('sortedHighscore ', sortedHighscore);
-    for(const userScores of sortedHighscore) {
-      const ListItem = document.createElement("LI");
+  for (const userScores of sortedHighscore) {
+    const ListItem = document.createElement("LI");
 
-      ListItem.textContent = `${userScores.player} - ${userScores.score}`;
-      highscoreListEl.appendChild(ListItem);
-    }
+    ListItem.textContent = `${userScores.player} - ${userScores.score}`;
+    highscoreListEl.appendChild(ListItem);
+  }
 }
 
 function obtainUsersInitials(event) {
   event.preventDefault();
+  const userInitialsEl = document.querySelector("#user-initials");
 
   // set local storage and user initials
   const userInitials = userInitialsEl.value.trim();
   quizScoreLocalStorage.push({
     player: userInitials,
-    score: userScore
+    score: userScore,
   });
-  
-  localStorage.setItem('js-quiz-highscores', JSON.stringify(quizScoreLocalStorage));
+
+  localStorage.setItem(
+    "js-quiz-highscores",
+    JSON.stringify(quizScoreLocalStorage)
+  );
 
   // go to user initial page
   window.location.href = "../html/highscore.html";
@@ -199,11 +194,6 @@ function obtainUsersInitials(event) {
 
 if (anwserChoiceList) {
   anwserChoiceList.addEventListener("click", anwserChoiceValidation);
-}
-
-if (userInitialsSubmitBtn) {
-  // console.log('userScore', userScore);
-  userInitialsSubmitBtn.addEventListener("click", obtainUsersInitials);
 }
 
 if (highscoreListEl) {

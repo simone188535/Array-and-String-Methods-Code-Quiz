@@ -58,16 +58,16 @@ main.main-content button, main.main-content button a, main.main-content #user-in
     border-radius: 5px;
 }
 
-main.main-content .question-choices {
+main.main-content .sub-content .question-choices {
     width: 300px;
     margin: 0 auto;
 }
 
-main.main-content .question-choices .anwser-choices-list {
+main.main-content .sub-content .question-choices .anwser-choices-list {
     list-style-position: inside;
 }
 
-main.main-content .question-choices .anwser-choices-list li {
+main.main-content .sub-content .question-choices .anwser-choices-list li {
     list-style-position: inside;
     background: var(--primary-purple);
     color: var(--white);
@@ -76,7 +76,7 @@ main.main-content .question-choices .anwser-choices-list li {
     border-radius: 5px;
 }
 
-main.main-content .question-choices .anwser-choices-list li:hover {
+main.main-content .sub-content .question-choices .anwser-choices-list li:hover {
     background: var(--dark-purple);
 }
 
