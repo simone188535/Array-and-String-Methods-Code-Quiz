@@ -9,14 +9,13 @@ const anwserResultsEl = document.querySelector(".anwser-results");
 const resultStatusEl = document.querySelector(".correct-incorrect");
 const nextQuestionTimerEl = document.querySelector(".next-question-timer");
 const clearHighscoreEl = document.querySelector("#clear-highscore");
-const highscoreListEl = document.querySelector("#highscore-section-list");
 const overviewEl = document.querySelector(".overview");
 const subContent = document.querySelector(".sub-content");
 let remainingTimeToSolveQuiz = 75;
 let remainingTimeToShowIfAnwserIsCorrect = 3;
 let questionIndex = 0;
 let userScore = 0;
-let quizScoreLocalStorage =
+const quizScoreLocalStorage =
   JSON.parse(localStorage.getItem("js-quiz-highscores")) || [];
 
 function quizCountDown(elementToDisplayTime) {
@@ -46,19 +45,19 @@ if (timeRemainingEl) {
 // anwser should be a number
 const quizData = [
   {
-    question: "Which method returns an Array of Strings?",
+    question: "Which method returns an array of strings?",
     anwser: 0,
     options: [".split()", ".toString()", ".trim()", ".toLowerCase()"],
   },
   {
     question:
-      "Which method calls a function for each element in the array without returning a new array?",
+      "Which method calls a function for each element in an array without returning a new array?",
     anwser: 3,
     options: [".map()", ".includes()", ".pop()", ".forEach()"],
   },
   {
     question:
-      "Which method check to see if a given value is included within a specific string?",
+      "Which method checks to see if a given value is included within a specific string?",
     anwser: 1,
     options: [".slice()", ".includes()", ".splice()", ".toString()"],
   },
@@ -86,15 +85,10 @@ function displayQuestionAndAnwserChoices() {
   }
 }
 
-// if question and anwserChoiceList elements are available
-if (questionEl && anwserChoiceList) {
-  displayQuestionAndAnwserChoices();
-}
-
 function anwserChoiceValidation(event) {
   // this is a great place to do event delegation
   let isAnwserCorrect;
-  let target = event.target; // where was the click?
+  let target = event.target;
 
   if (target.matches("li")) {
     if (
@@ -158,20 +152,6 @@ function anwserChoiceValidation(event) {
   }
 }
 
-function displayHighscore() {
-  // Sort data by score in desc order
-  const sortedHighscore = quizScoreLocalStorage.sort(
-    (firstItem, secondItem) => secondItem.score - firstItem.score 
-  );
-
-  for (const userScores of sortedHighscore) {
-    const ListItem = document.createElement("LI");
-
-    ListItem.textContent = `${userScores.player} - ${userScores.score}`;
-    highscoreListEl.appendChild(ListItem);
-  }
-}
-
 function obtainUsersInitials(event) {
   event.preventDefault();
   const userInitialsEl = document.querySelector("#user-initials");
@@ -188,14 +168,10 @@ function obtainUsersInitials(event) {
     JSON.stringify(quizScoreLocalStorage)
   );
 
-  // go to user initial page
+  // go to user highscores page
   window.location.href = "../html/highscore.html";
 }
 
-if (anwserChoiceList) {
-  anwserChoiceList.addEventListener("click", anwserChoiceValidation);
-}
+anwserChoiceList.addEventListener("click", anwserChoiceValidation);
+displayQuestionAndAnwserChoices();
 
-if (highscoreListEl) {
-  displayHighscore();
-}
