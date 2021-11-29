@@ -9,7 +9,7 @@ from the timer. When they anwser correctly, points are
 added to the users score.
 
 ## Visuals
-![Quiz Thumbnail](assets/images/quiz-thumbnail.png)
+![Quiz Thumbnail](Assets/images/quiz-thumbnail.png)
 
 ## Deployed Links
 
