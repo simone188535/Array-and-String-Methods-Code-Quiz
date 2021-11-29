@@ -11,6 +11,7 @@ const nextQuestionTimerEl = document.querySelector(".next-question-timer");
 const clearHighscoreEl = document.querySelector("#clear-highscore");
 const overviewEl = document.querySelector(".overview");
 const subContent = document.querySelector(".sub-content");
+let areInitialsDisplayed = false;
 let remainingTimeToSolveQuiz = 75;
 let remainingTimeToShowIfAnwserIsCorrect = 3;
 let questionIndex = 0;
@@ -22,27 +23,24 @@ function quizCountDown(elementToDisplayTime) {
   remainingTimeToSolveQuiz--;
 
   if (remainingTimeToSolveQuiz <= 0) {
+    doNotRedirectToInitialsPage = true;
     // reset time to zero
     remainingTimeToSolveQuiz = 0;
     // reset user score
     userScore = 0;
-    //  exit quiz go back to home page
-    window.location.href = "../../index.html";
     // clear timer
     clearTimeout(quizTimer);
+
+    // display initial inputs
+    displayInitialsInput();
   }
   elementToDisplayTime.textContent = remainingTimeToSolveQuiz;
 }
 
 // Timer logic
-let quizTimer;
-
-if (timeRemainingEl) {
   timeRemainingEl.textContent = remainingTimeToSolveQuiz;
-  quizTimer = setInterval(quizCountDown, 1000, timeRemainingEl);
-}
+  let quizTimer = setInterval(quizCountDown, 1000, timeRemainingEl);
 
-// anwser should be a number
 const quizData = [
   {
     question: "Which method returns an array of strings?",
@@ -69,6 +67,7 @@ const quizData = [
 ];
 
 function displayQuestionAndAnwserChoices() {
+  areInitialsDisplayed = true;
   // display question
   questionEl.textContent = quizData[questionIndex].question;
 
@@ -83,6 +82,21 @@ function displayQuestionAndAnwserChoices() {
     ListItem.textContent = quizDataAnwserChoices[anwserChoices];
     anwserChoiceList.appendChild(ListItem);
   }
+}
+
+function displayInitialsInput() {
+  timeRemainingContainerEl.innerHTML = "";
+      overviewEl.innerHTML = " <strong> Please add your initials </strong>";
+      subContent.innerHTML = `<article class="initials">
+        <input type="text" id="user-initials" name="user-initials" /><br /><br />
+        <input id="user-initials-submit" type="submit" value="Submit" />
+      </article>`;
+
+      const userInitialsSubmitBtn = document.querySelector(
+        "#user-initials-submit"
+      );
+
+      userInitialsSubmitBtn.addEventListener("click", obtainUsersInitials);
 }
 
 function anwserChoiceValidation(event) {
@@ -114,19 +128,9 @@ function anwserChoiceValidation(event) {
       // call displayQuestionAndAnwserChoices
       displayQuestionAndAnwserChoices();
     } else {
-      timeRemainingContainerEl.innerHTML = "";
-      overviewEl.innerHTML = " <strong> Please add your initials </strong>";
-      subContent.innerHTML = `<article class="initials">
-        <input type="text" id="user-initials" name="user-initials" /><br /><br />
-        <input id="user-initials-submit" type="submit" value="Submit" />
-      </article>`;
-
-      const userInitialsSubmitBtn = document.querySelector(
-        "#user-initials-submit"
-      );
-
-      userInitialsSubmitBtn.addEventListener("click", obtainUsersInitials);
-
+      if (areInitialsDisplayed) return false;
+      // display initial inputs
+      displayInitialsInput();
     }
 
     // display previous results
